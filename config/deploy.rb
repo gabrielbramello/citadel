@@ -2,14 +2,14 @@
 lock '3.12.0'
 
 set :application, 'citadel'
-set :rvm_ruby_string, 'ruby-2.5.0'
+set :rvm_ruby_string, 'ruby-2.7.0'
 
 # git settings
-set :repo_url, 'git@github.com:ozfortress/citadel.git'
+set :repo_url, 'git@github.com:gabrielbramello/citadel.git'
 set :branch, :master
 
 # Default deploy_to directory is /var/www/my_app_name
-set :deploy_to, '/opt/citadel'
+set :deploy_to, '/home/tf2brasil/'
 
 set :rails_env, 'production'
 
