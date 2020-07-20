@@ -51,7 +51,6 @@ gem 'counter_culture', '~> 2.0'
 # Tournament systems
 gem 'tournament-system', '~> 2.0'
 
-gem 'scanf', '~> 1.0'
 group :test do
   # Use rspec for tests
   gem 'rspec-rails', '~> 3.8'
