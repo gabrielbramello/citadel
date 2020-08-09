@@ -41,6 +41,8 @@ module Forums
         @subtopics = @subtopics.visible
         @threads   = @threads.visible.or(@threads.where(created_by: current_user))
       end
+
+      @threads = @threads.includes(:created_by).paginate(page: params[:page])
     end
 
     def toggle_subscription
@@ -100,7 +102,7 @@ module Forums
 
     def topic_params
       params.require(:forums_topic).permit(:parent_id, :name, :locked, :pinned,
-                                           :hidden, :default_locked, :default_hidden)
+                                           :hidden, :default_locked, :default_hidden, :description)
     end
 
     def require_can_manage_parent

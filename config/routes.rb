@@ -22,10 +22,12 @@ Rails.application.routes.draw do
   get 'admin', to: 'admin#index'
   get 'statistics',  to: 'admin#statistics', as: 'admin_statistics'
 
+  post 'markdown_preview', to: 'markdown#markdown_preview'
+
   namespace :meta do
-    resources :games, except: [:destroy]
-    resources :formats, except: [:destroy]
-    resources :maps, except: [:destroy]
+    resources :games
+    resources :formats
+    resources :maps
   end
 
   resources :leagues do
@@ -116,6 +118,8 @@ Rails.application.routes.draw do
     resource :logs, controller: 'users/logs', only: :show do
       get :alts, on: :collection
     end
+
+    resources :notifications, controller: 'users/notifications', only: [:create]
   end
 
   resources :notifications, controller: 'users/notifications', only: [:index, :show, :destroy] do

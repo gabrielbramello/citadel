@@ -12,19 +12,19 @@ module Forums
     validates :pinned, inclusion: { in: [true, false] }
     validates :hidden, inclusion: { in: [true, false] }
 
-    scope :ordered, -> { order(created_at: :desc) }
+    scope :ordered, -> { order(pinned: :desc, created_at: :desc) }
 
     scope :locked,   -> { where(locked: true) }
     scope :unlocked, -> { where(locked: false) }
-    scope :pinned,   -> { where(pinend: true) }
+    scope :pinned,   -> { where(pinned: true) }
     scope :hidden,   -> { where(hidden: true) }
     scope :visible,  -> { where(hidden: false) }
 
     counter_culture :topic,
-                    column_name: proc { |model| model.visible? ? 'visible_threads_count' : nil },
+                    column_name:  proc { |model| model.visible? ? 'visible_threads_count' : nil },
                     column_names: {
                       'NOT forums_threads.hidden' => 'visible_threads_count',
-                      'forums_threads.hidden' => nil,
+                      'forums_threads.hidden'     => nil,
                     }
 
     before_create :update_depth
@@ -83,8 +83,14 @@ module Forums
     end
 
     def original_post
-      posts.order(created_at: :asc).first
+      posts.reorder(created_at: :asc).first
     end
+
+    def latest_post
+      posts.reorder(created_at: :desc).first
+    end
+
+    self.per_page = 20
 
     private
 
