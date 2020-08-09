@@ -12,9 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require popper
 //= require bootstrap-sprockets
-//= require moment
-//= require bootstrap-datetimepicker
 //= require cocoon
 //= require markdown.converter
 //= require markdown.editor
@@ -68,5 +67,33 @@ $(function() {
 
         target.val(text + quote);
         target.focus();
+    });
+
+    // Markdown Preview
+    $('*[data-markdown-preview').click(function() {
+        console.log('preview');
+
+        var element = $(this);
+        var preview = $('#' + element.attr('data-markdown-preview'));
+        var source = $('#' + element.attr('data-markdown-source'));
+        var no_escape = element.attr('data-markdown-escape') == 'false';
+
+        if (no_escape) {
+            var url = '/markdown_preview?escape=false';
+        } else {
+            var url = '/markdown_preview?escape=true';
+        }
+
+        var markdown = source.val();
+        $.ajax(url, {
+            method: 'POST',
+            data: markdown,
+            error: function(req, status, error) {
+                preview.html(error);
+            },
+            success: function(res, status, req) {
+                preview.html(res);
+            },
+        });
     });
 });
